@@ -6,13 +6,16 @@
     <title>Citybrex s.r.o. - Výroba vstupních bran</title>
     <style>
         /* Global styles */
-        body {
+        html, body {
             margin: 0;
             padding: 0;
             font-family: "Bahnschrift Light", sans-serif;
             color: #333;
             background-color: #f8f9fa;
             line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         a {
@@ -50,17 +53,28 @@
         }
 
         .header-container {
-            width: 99%;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 100vw;
             padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-sizing: border-box;
         }
 
         .logo {
             font-size: 24px;
             font-weight: bold;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo .subtitle {
+            font-size: 16px;
+            color: #74DB17;
+            font-weight: normal;
         }
 
         nav ul {
@@ -84,8 +98,9 @@
             justify-content: center;
             text-align: center;
             color: #fff;
-            width: 99%;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 100vw;
+            box-sizing: border-box;
         }
 
         .hero img {
@@ -96,12 +111,17 @@
             top: 0;
             left: 0;
             z-index: -1;
-            animation: zoom 10s infinite alternate;
+            animation: zoom 10s infinite alternate, fadeIn 1s ease-in-out forwards;
         }
 
         @keyframes zoom {
             0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
+            100% { transform: scale(1.15); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
         .hero-content {
@@ -121,9 +141,11 @@
 
         /* Sections */
         section {
-            width: 99%;
-            margin: 40px auto;
+            width: 100%;
+            max-width: 100vw;
+            margin: 40px 0;
             padding: 20px;
+            box-sizing: border-box;
         }
 
         h2 {
@@ -144,6 +166,8 @@
             position: relative;
             overflow: hidden;
             width: 100%;
+            max-width: 100vw;
+            box-sizing: border-box;
         }
 
         .gallery-track {
@@ -153,12 +177,15 @@
 
         .gallery-item {
             position: relative;
-            min-width: 25%; /* 4 items on desktop */
+            min-width: 25%;
             box-sizing: border-box;
             padding: 10px;
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.5s ease, transform 0.5s ease;
+            cursor: pointer;
+            border: 2px solid #d3d3d3;
+            border-radius: 10px;
         }
 
         .gallery-item.fade-in {
@@ -170,8 +197,7 @@
             width: 100%;
             height: auto;
             display: block;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
 
         .gallery-caption {
@@ -192,36 +218,183 @@
             opacity: 1;
         }
 
-        /* Mobile styles */
-        @media (max-width: 768px) {
-            .gallery-item {
-                min-width: 100%; /* 1 item on mobile */
-            }
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 10;
         }
 
-        /* Contact */
-        #contact {
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #fff;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .lightbox-prev, .lightbox-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .lightbox-prev {
+            left: 20px;
+        }
+
+        .lightbox-next {
+            right: 20px;
+        }
+
+        /* Form section */
+        .form-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            border: 1px solid #74DB17;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        .form-container button {
+            padding: 10px 20px;
+            background-color: #74DB17;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .form-container button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .checkbox-container {
+            margin-bottom: 20px;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            accent-color: #74DB17;
+        }
+
+        /* Contact section */
+        .contact-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .contact-block {
+            flex: 1;
+            min-width: 280px;
+            padding: 20px;
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 40px;
             text-align: center;
         }
 
-        #contact p {
-            margin: 10px 0;
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+        }
+
+        .map-container svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .map-dot {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+        }
+
+        .map-dot.semily {
+            top: 20%;
+            left: 60%;
+        }
+
+        .map-dot.praha {
+            top: 50%;
+            left: 50%;
         }
 
         /* Scroll to top button */
         .scroll-top {
             position: fixed;
-            bottom: 20px;
+            bottom: calc(20px + 10vh);
             right: 20px;
-            background-color: #007bff;
+            background-color: rgba(116, 219, 23, 0.5);
             color: #fff;
             width: 50px;
             height: 50px;
             border-radius: 50%;
+            border: 5px solid #74DB17;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -242,9 +415,10 @@
             color: #fff;
             text-align: center;
             padding: 20px;
-            width: 99%;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 100vw;
             border-top: 2px solid #74DB17;
+            box-sizing: border-box;
         }
 
         footer p {
@@ -261,6 +435,10 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            .gallery-item {
+                min-width: 100%;
+            }
+
             .header-container {
                 flex-direction: column;
             }
@@ -280,6 +458,11 @@
             .hero p {
                 font-size: 18px;
             }
+
+            .contact-container {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
@@ -287,7 +470,10 @@
 
     <header id="header">
         <div class="header-container">
-            <div class="logo">Citybrex s.r.o.</div>
+            <div class="logo">
+                Citybrex s.r.o.
+                <span class="subtitle">Vjezdové brány</span>
+            </div>
             <nav>
                 <ul>
                     <li><a href="#home">Domů</a></li>
@@ -315,6 +501,7 @@
     <section id="gallery">
         <h2>Naše realizace</h2>
         <div class="gallery-carousel">
+            <button class="prev">&#8592;</button>
             <div class="gallery-track">
                 <div class="gallery-item">
                     <img src="brana1.jpg" alt="Kovová brána s posuvným mechanismem">
@@ -351,6 +538,38 @@
                 <div class="gallery-item">
                     <img src="brana9.jpg" alt="Brána s integrovaným osvětlením">
                     <div class="gallery-caption">Brána s integrovaným osvětlením</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="brana10.jpg" alt="Posuvná brána s průhlednými prvky">
+                    <div class="gallery-caption">Posuvná brána s průhlednými prvky</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="brana11.jpg" alt="Brána s kovovou mříží">
+                    <div class="gallery-caption">Brána s kovovou mříží</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="brana12.jpg" alt="Automatická dvoukřídlá brána">
+                    <div class="gallery-caption">Automatická dvoukřídlá brána</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="brana13.jpg" alt="Brána s dřevěným obložením">
+                    <div class="gallery-caption">Brána s dřevěným obložením</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="brana14.jpg" alt="Kovová brána s geometrickým vzorem">
+                    <div class="gallery-caption">Kovová brána s geometrickým vzorem</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="brana15.jpg" alt="Posuvná brána pro rezidenční objekt">
+                    <div class="gallery-caption">Posuvná brána pro rezidenční objekt</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="brana16.jpg" alt="Brána s kombinací dřeva a kovu">
+                    <div class="gallery-caption">Brána s kombinací dřeva a kovu</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="brana17.jpg" alt="Elektrická brána s moderním designem">
+                    <div class="gallery-caption">Elektrická brána s moderním designem</div>
                 </div>
                 <!-- Duplikáty pro infinite loop -->
                 <div class="gallery-item">
@@ -389,14 +608,92 @@
                     <img src="brana9.jpg" alt="Brána s integrovaným osvětlením">
                     <div class="gallery-caption">Brána s integrovaným osvětlením</div>
                 </div>
+                <div class="gallery-item">
+                    <img src="brana10.jpg" alt="Posuvná brána s průhlednými prvky">
+                    <div class="gallery-caption">Posuvná brána s průhlednými prvky</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="brana11.jpg" alt="Brána s kovovou mříží">
+                    <div class="gallery-caption">Brána s kovovou mříží</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="brana12.jpg" alt="Automatická dvoukřídlá brána">
+                    <div class="gallery-caption">Automatická dvoukřídlá brána</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="brana13.jpg" alt="Brána s dřevěným obložením">
+                    <div class="gallery-caption">Brána s dřevěným obložením</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="brana14.jpg" alt="Kovová brána s geometrickým vzorem">
+                    <div class="gallery-caption">Kovová brána s geometrickým vzorem</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="brana15.jpg" alt="Posuvná brána pro rezidenční objekt">
+                    <div class="gallery-caption">Posuvná brána pro rezidenční objekt</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="brana16.jpg" alt="Brána s kombinací dřeva a kovu">
+                    <div class="gallery-caption">Brána s kombinací dřeva a kovu</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="brana17.jpg" alt="Elektrická brána s moderním designem">
+                    <div class="gallery-caption">Elektrická brána s moderním designem</div>
+                </div>
             </div>
+            <button class="next">&#8594;</button>
+        </div>
+
+        <!-- Form for inquiry -->
+        <div class="form-container">
+            <h3>Odeslat poptávku</h3>
+            <form id="inquiryForm" action="mailto:info@citybrex.cz" method="post" enctype="text/plain">
+                <label for="name">Jméno:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Vzkaz:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+
+                <div class="checkbox-container">
+                    <input type="checkbox" id="consent" name="consent">
+                    <label for="consent">Potvrzuji seznámení s Informacemi o zpracování osobních údajů</label>
+                </div>
+
+                <button type="submit" id="submitBtn" disabled>Odeslat</button>
+            </form>
         </div>
     </section>
 
     <section id="contact">
         <h2>Kontaktujte nás</h2>
-        <p>Telefon: 737 488 887</p>
-        <p>Email: <a href="mailto:info@citybrex.cz">info@citybrex.cz</a></p>
+        <div class="contact-container">
+            <div class="contact-block">
+                <h3>Kontaktní údaje</h3>
+                <p>Telefon: <a href="tel:+420737488887">737 488 887</a></p>
+                <p>Email: <a href="mailto:info@citybrex.cz">info@citybrex.cz</a></p>
+            </div>
+            <div class="contact-block">
+                <h3>Naše pobočky</h3>
+                <div class="map-container">
+                    <svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid meet">
+                        <path d="M150,0 C66,0 0,66 0,150 C0,234 66,300 150,300 C234,300 300,234 300,150 C300,66 234,0 150,0 Z" fill="#e0e0e0"/>
+                        <circle class="map-dot semily" cx="180" cy="80" r="5" fill="red"/>
+                        <circle class="map-dot praha" cx="150" cy="200" r="5" fill="red"/>
+                    </svg>
+                </div>
+                <p>Semily a Praha</p>
+            </div>
+            <div class="contact-block">
+                <h3>Fakturační údaje</h3>
+                <p>Citybrex s.r.o.</p>
+                <p>náměstí Přátelství 1518/2, Hostivař, 102 00 Praha</p>
+                <p>IČO: 06112030</p>
+                <p>DIČ: CZ06112030</p>
+            </div>
+        </div>
     </section>
 
     <footer>
@@ -405,6 +702,14 @@
     </footer>
 
     <div class="scroll-top" id="scrollTop">&#8593;</div>
+
+    <!-- Lightbox modal -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <button class="lightbox-prev" id="lightboxPrev">&#8592;</button>
+        <img id="lightboxImg" src="" alt="Zvětšený obrázek">
+        <button class="lightbox-next" id="lightboxNext">&#8594;</button>
+    </div>
 
     <script>
         // Smooth scroll for navigation
@@ -448,13 +753,13 @@
         const carousel = document.querySelector('.gallery-carousel');
         const track = document.querySelector('.gallery-track');
         const items = document.querySelectorAll('.gallery-item');
-        const itemCount = items.length / 2; // Protože jsou duplikáty
+        const itemCount = items.length / 2;
         let currentIndex = 0;
         let interval;
         let isMobile = window.innerWidth <= 768;
 
         function updateCarousel() {
-            const slideWidth = isMobile ? 100 : 25; // % pro posun
+            const slideWidth = isMobile ? 100 : 25;
             track.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
         }
 
@@ -472,13 +777,27 @@
             }
         }
 
+        function prevSlide() {
+            currentIndex--;
+            if (currentIndex < 0) {
+                currentIndex = itemCount - 1;
+                track.style.transition = 'none';
+                updateCarousel();
+                setTimeout(() => {
+                    track.style.transition = 'transform 0.5s ease-in-out';
+                }, 50);
+            } else {
+                updateCarousel();
+            }
+        }
+
         function startAutoSlide() {
             clearInterval(interval);
-            const slideInterval = isMobile ? 1000 : 3000; // 1s pro mobil, 3s pro desktop
+            const slideInterval = 2000;
             interval = setInterval(nextSlide, slideInterval);
         }
 
-        // Fade-in animace
+        // Fade-in animation for gallery
         window.addEventListener('load', () => {
             items.forEach((item, index) => {
                 setTimeout(() => {
@@ -495,7 +814,7 @@
             startAutoSlide();
         });
 
-        // Touch swipe pro mobil
+        // Touch swipe for mobile
         let touchStartX = 0;
         let touchEndX = 0;
 
@@ -509,10 +828,76 @@
             if (touchStartX - touchEndX > 50) {
                 nextSlide();
             } else if (touchEndX - touchStartX > 50) {
-                currentIndex = (currentIndex - 1 + itemCount) % itemCount;
-                updateCarousel();
+                prevSlide();
             }
             startAutoSlide();
+        });
+
+        // Carousel navigation buttons
+        document.querySelector('.prev').addEventListener('click', () => {
+            clearInterval(interval);
+            prevSlide();
+            startAutoSlide();
+        });
+
+        document.querySelector('.next').addEventListener('click', () => {
+            clearInterval(interval);
+            nextSlide();
+            startAutoSlide();
+        });
+
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxPrev = document.getElementById('lightboxPrev');
+        const lightboxNext = document.getElementById('lightboxNext');
+        let currentLightboxIndex = 0;
+
+        const images = Array.from(items).slice(0, itemCount).map(item => ({
+            src: item.querySelector('img').src,
+            alt: item.querySelector('img').alt
+        }));
+
+        function showLightbox(index) {
+            currentLightboxIndex = index;
+            lightboxImg.src = images[currentLightboxIndex].src;
+            lightboxImg.alt = images[currentLightboxIndex].alt;
+            lightbox.style.display = 'flex';
+        }
+
+        items.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                showLightbox(index % itemCount);
+            });
+        });
+
+        lightboxClose.addEventListener('click', () => {
+            lightbox.style.display = 'none';
+        });
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.style.display = 'none';
+            }
+        });
+
+        lightboxPrev.addEventListener('click', () => {
+            currentLightboxIndex = (currentLightboxIndex - 1 + images.length) % images.length;
+            showLightbox(currentLightboxIndex);
+        });
+
+        lightboxNext.addEventListener('click', () => {
+            currentLightboxIndex = (currentLightboxIndex + 1) % images.length;
+            showLightbox(currentLightboxIndex);
+        });
+
+        // Form consent checkbox
+        const consentCheckbox = document.getElementById('consent');
+        const submitBtn = document.getElementById('submitBtn');
+
+        consentCheckbox.addEventListener('change', () => {
+            submitBtn.disabled = !consentCheckbox.checked;
         });
     </script>
 
